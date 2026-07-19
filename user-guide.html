@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIスキル診断 利用者ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f6f6f3; --surface:#ffffff;
+  --ink:#1c1e22; --ink-soft:#4b4f57; --ink-faint:#8a8e96;
+  --rule:#dcdcd6; --rule-strong:#b9b9b0;
+  --accent:#2b3a8f; --accent-soft:#e8eaf6;
+  --caution:#8f5a2b; --caution-soft:#f6efe6;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --sans:'IBM Plex Sans JP',-apple-system,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+.layout{display:flex;max-width:1280px;margin:0 auto;gap:0}
+/* 目次サイドバー（正本HTMLと同型） */
+nav.toc{width:236px;flex-shrink:0;position:sticky;top:0;align-self:flex-start;height:100vh;overflow-y:auto;padding:44px 24px 44px 32px;border-right:1px solid var(--rule)}
+nav.toc .doc-id{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--accent);margin-bottom:6px}
+nav.toc .doc-name{font-size:12.5px;font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--ink-soft)}
+nav.toc ol{list-style:none;margin:0;padding:0}
+nav.toc li{margin-bottom:2px}
+nav.toc a{display:flex;gap:10px;align-items:baseline;padding:5px 8px;border-radius:3px;text-decoration:none;color:var(--ink-soft);font-size:12.5px;line-height:1.45}
+nav.toc a:hover{background:var(--accent-soft);color:var(--accent)}
+nav.toc a .n{font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);min-width:14px}
+nav.toc a:hover .n{color:var(--accent)}
+main{flex:1;min-width:0;background:var(--surface);border-right:1px solid var(--rule)}
+.page{max-width:820px;margin:0 auto;padding:56px 56px 96px}
+header.doc-head{border-bottom:2px solid var(--ink);padding-bottom:32px}
+.doc-head .eyebrow{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--ink-faint);margin-bottom:22px}
+.doc-head .eyebrow .ver{color:var(--accent);border:1px solid var(--accent);padding:3px 10px;letter-spacing:.1em;font-weight:500}
+h1{font-size:29px;font-weight:700;line-height:1.45;letter-spacing:.01em;margin-bottom:6px}
+.doc-head .subtitle{font-size:14px;color:var(--ink-soft)}
+table.meta{width:100%;border-collapse:collapse;margin-top:28px;font-size:13px}
+table.meta th,table.meta td{text-align:left;padding:9px 14px;border:1px solid var(--rule);vertical-align:top}
+table.meta th{width:132px;background:var(--paper);font-weight:500;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-soft)}
+section{padding-top:52px}
+section + section{border-top:1px solid var(--rule);margin-top:52px}
+h2{display:flex;align-items:baseline;gap:14px;font-size:20px;font-weight:700;margin-bottom:22px}
+h2 .sec-n{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--surface);background:var(--accent);padding:2px 9px;flex-shrink:0;transform:translateY(-2px)}
+h3{font-size:15px;font-weight:700;margin:26px 0 10px}
+p{margin-bottom:14px}
+ul,ol{margin:0 0 14px 24px}
+li{margin-bottom:4px}
+code{font-family:var(--mono);font-size:12.5px;background:var(--paper);border:1px solid var(--rule);padding:1px 6px}
+pre{font-family:var(--mono);font-size:12.5px;line-height:1.8;background:var(--paper);border:1px solid var(--rule);padding:14px 18px;margin:14px 0 20px;overflow-x:auto}
+pre code{background:none;border:none;padding:0}
+table.data{width:100%;border-collapse:collapse;margin:14px 0 20px;font-size:13px;line-height:1.7}
+table.data th{background:var(--ink);color:var(--surface);font-weight:500;text-align:left;padding:8px 12px;font-size:12px}
+table.data td{padding:9px 12px;border:1px solid var(--rule);vertical-align:top}
+table.data td.num{font-family:var(--mono);font-size:12px;white-space:nowrap;text-align:center}
+.note{border-left:3px solid var(--accent);background:var(--accent-soft);padding:14px 18px;margin:16px 0 20px;font-size:13.5px;line-height:1.8}
+.note.warn{border-left-color:var(--caution);background:var(--caution-soft)}
+.note .note-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;font-weight:600;color:var(--accent);display:block;margin-bottom:4px}
+.note.warn .note-label{color:var(--caution)}
+/* スコープ2分割 */
+.scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0 20px}
+.scope-box{border:1px solid var(--rule);padding:18px 20px}
+.scope-box.in{border-top:3px solid var(--accent)}
+.scope-box.out{border-top:3px solid var(--rule-strong)}
+.scope-box .scope-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;font-weight:600;display:block;margin-bottom:8px}
+.scope-box.in .scope-label{color:var(--accent)}
+.scope-box.out .scope-label{color:var(--ink-faint)}
+.scope-box ul{margin:0 0 0 20px;font-size:13.5px}
+/* 証拠等級カード */
+.grade-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin:14px 0 20px}
+.grade-card{border:1px solid var(--rule);padding:18px 20px}
+.grade-card .g{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--accent)}
+.grade-card.gc-b .g{color:#5d6d9c}
+.grade-card.gc-c .g{color:#9aa2b3}
+.grade-card .g-name{font-size:13.5px;font-weight:700;margin:2px 0 8px}
+.grade-card .g-desc{font-size:12.5px;color:var(--ink-soft);line-height:1.75}
+.grade-card .g-cap{font-family:var(--mono);font-size:11.5px;margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);color:var(--ink-soft)}
+.grade-card .g-cap b{color:var(--accent)}
+/* 鮮度3段階 */
+.fresh-steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;margin:14px 0 20px;border:1px solid var(--rule)}
+.fresh-step{padding:16px 18px;border-right:1px solid var(--rule)}
+.fresh-step:last-child{border-right:none}
+.fresh-step .f-period{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--accent);display:block;margin-bottom:6px}
+.fresh-step .f-rule{font-size:13px;font-weight:700}
+.fresh-step .f-desc{font-size:12px;color:var(--ink-soft);line-height:1.7;margin-top:4px}
+.fresh-step.f2{background:var(--paper)}
+.fresh-step.f3{background:var(--paper)}
+.fresh-step.f3 .f-period{color:var(--caution)}
+/* レベルスケール */
+.score-scale{margin:26px 0 8px}
+.score-scale .bar{display:flex;height:44px;border:1px solid var(--rule-strong)}
+.score-scale .band{position:relative;display:flex;flex-direction:column;justify-content:center;padding:0 8px;border-right:1px solid rgba(255,255,255,.55);color:#fff;overflow:hidden}
+.score-scale .band:last-child{border-right:none}
+.score-scale .band .lv{font-family:var(--mono);font-size:11px;font-weight:600;line-height:1.3}
+.score-scale .band .nm{font-size:10px;line-height:1.3;white-space:nowrap;opacity:.92}
+.score-scale .ticks{display:flex;font-family:var(--mono);font-size:10px;color:var(--ink-faint);margin-top:4px}
+/* レベル基準解説 */
+table.lv-legend{width:100%;border-collapse:collapse;margin:22px 0 8px;font-size:12px;line-height:1.7;color:var(--ink-soft)}
+table.lv-legend th{background:var(--paper);color:var(--ink-faint);font-weight:500;text-align:left;padding:5px 10px;font-size:11px;font-family:var(--mono);letter-spacing:.06em;border:1px solid var(--rule)}
+table.lv-legend td{padding:5px 10px;border:1px solid var(--rule);vertical-align:top}
+table.lv-legend td.lv-range,table.lv-legend td.lv-id{font-family:var(--mono);font-size:11px;white-space:nowrap}
+table.lv-legend td.lv-id{color:var(--accent);font-weight:600}
+table.lv-legend td.lv-name{white-space:nowrap}
+/* 診断フロー */
+.flow{margin:14px 0 20px;border:1px solid var(--rule)}
+.flow-step{display:flex;gap:16px;padding:13px 18px;border-bottom:1px solid var(--rule);font-size:13.5px}
+.flow-step:last-child{border-bottom:none}
+.flow-step .fs-n{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);flex-shrink:0;width:20px}
+.flow-step .fs-body b{font-weight:700}
+.flow-step .fs-body .fs-sub{font-size:12px;color:var(--ink-soft)}
+/* Q&A */
+.qa{border:1px solid var(--rule);padding:16px 20px;margin-bottom:14px}
+.qa .q{font-weight:700;font-size:13.5px;margin-bottom:6px}
+.qa .q::before{content:"Q. ";font-family:var(--mono);color:var(--accent)}
+.qa .a{font-size:13.5px;color:var(--ink-soft)}
+.qa .a::before{content:"A. ";font-family:var(--mono);color:var(--ink-faint)}
+footer.doc-foot{margin-top:72px;padding-top:20px;border-top:2px solid var(--ink);font-family:var(--mono);font-size:11px;color:var(--ink-faint);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media print{
+  nav.toc{display:none}
+  body{background:#fff}
+  main{border:none}
+  .page{padding:0}
+}
+@media(max-width:900px){
+  nav.toc{display:none}
+  .layout{display:block}
+  .page{padding:32px 20px 64px}
+  .scope-grid,.grade-cards,.fresh-steps{grid-template-columns:1fr}
+  .fresh-step{border-right:none;border-bottom:1px solid var(--rule)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="toc" aria-label="目次">
+  <div class="doc-id">GENAI-SKILL / GUIDE v1.0</div>
+  <div class="doc-name">AIスキル診断<br>利用者ガイド</div>
+  <ol>
+    <li><a href="#s1"><span class="n">1</span>これは何を測るものか</a></li>
+    <li><a href="#s2"><span class="n">2</span>証拠の再現性（A/B/C）</a></li>
+    <li><a href="#s3"><span class="n">3</span>5つの評価ベクトル</a></li>
+    <li><a href="#s4"><span class="n">4</span>スコアとレベル</a></li>
+    <li><a href="#s5"><span class="n">5</span>鮮度ルール</a></li>
+    <li><a href="#s6"><span class="n">6</span>診断の受け方・使い方</a></li>
+    <li><a href="#s7"><span class="n">7</span>よくある誤解と運用原則</a></li>
+  </ol>
+</nav>
+
+<main>
+<div class="page">
+
+<header class="doc-head">
+  <div class="eyebrow"><span>GENAI SKILL ASSESSMENT — USER GUIDE</span><span class="ver">GUIDE v1.0</span></div>
+  <h1>AIスキル診断 利用者ガイド</h1>
+  <p class="subtitle">生成AI技術者スキル評価フレームワーク v2.0 の考え方と、診断ツールの使い方</p>
+  <table class="meta">
+    <tr><th>対象読者</th><td>診断を受ける人・評価する人（事前知識は不要）</td></tr>
+    <tr><th>正本</th><td>生成AI技術者スキル評価フレームワーク v2.0（<a href="outputs/genai-skill-framework-v2.html">HTML</a> / <a href="outputs/genai-skill-framework-v2.md">Markdown</a>）。本ガイドは理解補助であり、解釈が分かれた場合は正本を優先する</td></tr>
+    <tr><th>構成</th><td>①個人採点（Claude Codeスキル・対話専用） ②グループダッシュボード（Pythonスクリプト・AI呼び出しなし）</td></tr>
+    <tr><th>所要時間</th><td>診断1回あたり30〜60分（実績の棚卸し状況による）</td></tr>
+  </table>
+</header>
+
+<section id="s1">
+  <h2><span class="sec-n">1</span>これは何を測るものか</h2>
+  <p>このフレームワークは、<b>「AIという確率的なシステムを、実務要件を満たす決定論的なシステムへ組み上げる能力」</b>（Architect Track）を測ります。目的は2つ——①自分の成長領域を特定すること、②社内のスキル分布を可視化して育成・配置の参考にすることです。</p>
+  <div class="scope-grid">
+    <div class="scope-box in">
+      <span class="scope-label">測るもの（ARCHITECT TRACK）</span>
+      <ul>
+        <li>要件を厳密に言語化し、AIエージェントを指揮して実装する力</li>
+        <li>コンテキスト・データ・状態の設計力</li>
+        <li>ハルシネーション等の不確実性を定量的に制御する力</li>
+        <li>本番運用に耐えるインフラ・セキュリティ・コストの設計力</li>
+      </ul>
+    </div>
+    <div class="scope-box out">
+      <span class="scope-label">測らないもの（スコープ外）</span>
+      <ul>
+        <li>基盤モデルの研究・事前学習・アーキテクチャ改良</li>
+        <li>Fine-tuning / LoRA等によるモデル適応</li>
+        <li>手書きコーディングの速度・アルゴリズム競技力</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">
+    <span class="note-label">重要</span>
+    スコープ外の領域に強みを持つ人が低スコアになっても、それは<b>測定対象外というだけで、能力の欠如を意味しません</b>。診断結果を読むときは必ずこの前提を思い出してください。
+  </div>
+</section>
+
+<section id="s2">
+  <h2><span class="sec-n">2</span>証拠の再現性 — 点数上限を決める</h2>
+  <p>この診断は「自分はできます」という<b>主張ではなく、成果物（証拠）</b>を採点します。「発信がうまい人が高く出る」「AI生成記事で実績を盛れる」という落とし穴を防ぐため、証拠を<b>証拠の再現性</b>（A / B / C）に分類し、<b>再現性がそのベクトルの到達度上限を決めます</b>。</p>
+  <div class="grade-cards">
+    <div class="grade-card">
+      <span class="g">A</span>
+      <div class="g-name">再現可能</div>
+      <div class="g-desc">採点時に<b>本人の申告以外の主体</b>（AI・ピア評価者・社内レビュアー）が、手順どおり検証できる成果物。<b>社内非公開でも可</b>（FW 7章）。<b>動くデモURL＋手順</b>、<b>リポジトリURL＋README</b>、<b>Eval数値ファイル＋手順</b>のいずれかがセット。ガイドHTML<b>内に</b>URLと手順を書いてもよい。例: 社内Git、VPN内デモ、共有ドライブ上のEval CSV、HF Spaces</div>
+      <div class="g-cap">上限 <b>5点</b>（満点まで可）</div>
+    </div>
+    <div class="grade-card gc-b">
+      <span class="g">B</span>
+      <div class="g-name">設計文書</div>
+      <div class="g-desc">「なぜその設計にしたか」の判断・トレードオフが記述された文書。<b>検証用URL・手順・数値記録が無いHTMLガイド単体</b>は原則ここ（B）。SNS投稿・ブログ記事もB。例: 設計思想だけの tech-guide、比較検討記事</div>
+      <div class="g-cap">上限 <b>3点</b></div>
+    </div>
+    <div class="grade-card gc-c">
+      <span class="g">C</span>
+      <div class="g-name">記述のみ</div>
+      <div class="g-desc">やったことの記述はあるが、判断理由も再現性もないもの。例: 概要レベルのブログ、箇条書きの実績リスト</div>
+      <div class="g-cap">上限 <b>2点</b></div>
+    </div>
+  </div>
+  <p>つまり、どれだけ経験があっても<b>再現性Aの証拠がないベクトルには4点以上がつきません</b>（Bは上限3点、Cは上限2点）。<b>到達度と再現性は別物</b>です。到達度が高くても再現性Bなら3点止まりになります。</p>
+
+  <div class="note warn">
+    <span class="note-label">よくある取り違え（採点前に必読）</span>
+    <ul style="margin:8px 0 0;padding-left:1.2em;line-height:1.65">
+      <li><b>「第三者」＝インターネット上の不特定一般ではありません。</b> 本人の口だけでない検証主体（<b>採点AI・ピア評価者・社内レビュアー</b>）が手順どおり確認できるか、が基準です。本ツールは社内用のため、<b>社内Git・社内wiki・VPN内デモ・ローカルファイルパス</b>も手順付きならAになり得ます（FW 7章）。</li>
+      <li><b>HTMLガイドに検証用URL＋手順を書けばAになり得ます。</b> 逆に、設計説明だけで検証用リンク・手順・Eval数値が無いガイドはBです。</li>
+      <li><b>SNS投稿・ブログ記事は原則B</b>（設計の説明であり、システムの検証先ではない）。</li>
+      <li><b>採点AIがセッション内で実際に読めること。</b> URLを載せる場合、AIがfetchできないときはファイルパス・貼り付け・同セッションで開ける形で提示してください。</li>
+    </ul>
+  </div>
+
+  <h3>証拠の種類と再現性の対応表</h3>
+  <table class="data">
+    <tr><th style="width:38%">提出物の例</th><th style="width:72px">再現性</th><th>採点上の意味</th></tr>
+    <tr><td>社内Git / VPN内デモ / 共有ドライブ ＋ 手順（ガイド内記載可）</td><td class="num" style="color:var(--accent);font-weight:600">A</td><td>社内非公開可。採点AI・ピアが手順どおり検証できること</td></tr>
+    <tr><td>GitHubリポジトリ ＋ READMEで再現可能</td><td class="num" style="color:var(--accent);font-weight:600">A</td><td>上限5点まで可（到達度が4以上なら4点以上も可能）</td></tr>
+    <tr><td>HF Spaces / 本番デモURL ＋ 手順書（ガイド内記載可）</td><td class="num" style="color:var(--accent);font-weight:600">A</td><td>同上</td></tr>
+    <tr><td>Eval・テスト結果のCSV/JSON/レポート ＋ 再現手順</td><td class="num" style="color:var(--accent);font-weight:600">A</td><td>V4等の定量評価に有効</td></tr>
+    <tr><td>HTMLガイド（設計説明のみ・検証URL/手順/数値なし）</td><td class="num">B</td><td><b>上限3点</b>。4点以上不可</td></tr>
+    <tr><td>SNS投稿・ブログ記事・比較検討記事</td><td class="num">B</td><td>設計判断は読めるが検証先ではない。上限3点</td></tr>
+    <tr><td>箇条書きの実績リスト・概要メモ</td><td class="num">C</td><td>上限2点</td></tr>
+  </table>
+
+  <h3>提出前チェックリスト</h3>
+  <p>診断を始める前に、各ベクトルで次を確認してください。</p>
+  <ul>
+    <li>□ 各ベクトルで<b>検証用のURL・ファイル・手順</b>がセットになっているか（社内限定でも可。ガイドHTML内に書いてもよい）</li>
+    <li>□ 採点セッションで<b>AIまたは評価者が実際に内容を確認できる</b>形か（fetch不可のURLだけにしていないか）</li>
+    <li>□ SNS投稿やブログ記事を「検証先の本体」にしていないか（解説として添える分には可）</li>
+    <li>□ 4点以上を期待するベクトルは、再現性Aに加え<b>ルーブリック上の到達度</b>も満たしているか</li>
+  </ul>
+  <p style="font-size:13px;color:var(--ink-soft)">「実力はあるが証拠がない／ガイドだけ」場合、スコアは意図的に低く出ます。最短の改善策は、<b>再現性A相当の成果物を1つ追加する</b>ことです。</p>
+</section>
+
+<section id="s3">
+  <h2><span class="sec-n">3</span>5つの評価ベクトル</h2>
+  <p>スキルを5つの軸（ベクトル）で測ります。各ベクトルは到達度（0〜5）で採点され、下の式で重み付き点に換算して合計100点満点になります。</p>
+  <table class="data">
+    <tr><th style="width:36px">軸</th><th style="width:210px">名称</th><th style="width:52px">重み</th><th class="num" style="width:72px">満点寄与</th><th>何を見るか</th></tr>
+    <tr>
+      <td class="num">V1</td><td>Context Engineering<br><span style="font-size:11.5px;color:var(--ink-faint)">コンテキスト設計力</span></td><td class="num">25%</td><td class="num">25.0</td>
+      <td>業務要件・ドメイン知識・タスク状態を、LLMが正確に解釈できる形に翻訳・構造化できる力。曖昧な業務要件を「入力・状態・出力・例外」に分解できるか</td>
+    </tr>
+    <tr>
+      <td class="num">V2</td><td>Agentic System Design<br><span style="font-size:11.5px;color:var(--ink-faint)">エージェントシステム設計力</span></td><td class="num">25%</td><td class="num">25.0</td>
+      <td>AIエージェントを安全に稼働を継続し、実務品質で動くシステムとして設計できる力。セキュリティ（インジェクション対策・権限最小化）と出力品質の制御を含む</td>
+    </tr>
+    <tr>
+      <td class="num">V3</td><td>Knowledge Architecture<br><span style="font-size:11.5px;color:var(--ink-faint)">知識アーキテクチャ設計力</span></td><td class="num">20%</td><td class="num">20.0</td>
+      <td>知識・文書・データをシステムが使える形に整える力。<b>RAG専用ではない</b>（キーワード検索・長文直接投入・「検索基盤を作らない」判断も含む）。複雑なRAGを組んだこと自体は加点されない</td>
+    </tr>
+    <tr>
+      <td class="num">V4</td><td>Evaluation &amp; Observability<br><span style="font-size:11.5px;color:var(--ink-faint)">評価・観測能力</span></td><td class="num">15%</td><td class="num">15.0</td>
+      <td>AIの出力品質を数値で捉え、劣化原因を「プロンプト／データ／モデル／インフラ」に切り分けて改善できる力</td>
+    </tr>
+    <tr>
+      <td class="num">V5</td><td>Production &amp; LLMOps<br><span style="font-size:11.5px;color:var(--ink-faint)">本番構築・運用能力</span></td><td class="num">15%</td><td class="num">15.0</td>
+      <td>AIシステムを本番で動かし続けられる力。<b>インフラ構築だけではない</b>（環境の再現、ローカル／クラウド推論の結合、コスト・データ配置のリスク判断、監視・障害対応の運用を含む）</td>
+    </tr>
+  </table>
+  <h3>重み付き点の計算式</h3>
+  <p><code>重み付き点 = 到達度 × 重み(%) ÷ 5</code>（小数第1位）。合計 = V1〜V5の和（0〜100）。</p>
+  <ul>
+    <li><b>÷5 の意味</b>: 到達度は0〜5。到達度5のとき、そのベクトルの重み％がそのまま満点寄与になる（例: V1 到達度4 → 4 × 25 ÷ 5 = 20.0）</li>
+  </ul>
+  <h3>重みの数値根拠</h3>
+  <ul>
+    <li><b>V1・V2（各25%）</b>: Architect Trackの中核。コンテキスト設計とエージェント構造の質に、他軸の成果が従属するため最重視</li>
+    <li><b>V3（20%）</b>: 実務価値への直結度は高いが、中核2軸の従属側として一段軽くした</li>
+    <li><b>V4・V5（各15%）</b>: 設計を検証・運用可能にする支援的性格。弱いと合計への打撃は V1/V2 より小さい</li>
+  </ul>
+  <p style="font-size:13px;color:var(--ink-soft)">重み 25/25/20/15/15 はパイロット前の仮設定で、運用データに基づき改訂され得ます（FW 7章）。各ベクトルの0〜5点の行動基準は正本の3章を参照してください。</p>
+</section>
+
+<section id="s4">
+  <h2><span class="sec-n">4</span>スコアとレベル</h2>
+  <p>合計点 = 各ベクトルの <code>到達度 × 重み(%) ÷ 5</code> の和（0〜100）。その帯でレベル（L0〜L5）が決まります。計算の詳細は§3。</p>
+  <div class="score-scale">
+    <div class="bar">
+      <div class="band" style="flex:25;background:#b9bcc4"><span class="lv">L0</span><span class="nm">Entry</span></div>
+      <div class="band" style="flex:15;background:#9aa2b3"><span class="lv">L1</span><span class="nm">Foundation</span></div>
+      <div class="band" style="flex:15;background:#7c88a6"><span class="lv">L2</span><span class="nm">App Builder</span></div>
+      <div class="band" style="flex:15;background:#5d6d9c"><span class="lv">L3</span><span class="nm">Practitioner</span></div>
+      <div class="band" style="flex:15;background:#404f96"><span class="lv">L4</span><span class="nm">Architect</span></div>
+      <div class="band" style="flex:16;background:#2b3a8f"><span class="lv">L5</span><span class="nm">Principal</span></div>
+    </div>
+    <div class="ticks">
+      <span style="flex:25">0</span><span style="flex:15">25</span><span style="flex:15">40</span><span style="flex:15">55</span><span style="flex:15">70</span><span style="flex:16">85</span><span>100</span>
+    </div>
+  </div>
+  <table class="lv-legend">
+    <tr><th>スコア</th><th>Lv</th><th>呼称</th><th>状態の説明</th></tr>
+    <tr><td class="lv-range">85〜100</td><td class="lv-id">L5</td><td class="lv-name">Principal Architect</td><td>方法論を確立し、組織の標準を設計できる。全ベクトルで等級A証拠を持つ</td></tr>
+    <tr><td class="lv-range">70〜84</td><td class="lv-id">L4</td><td class="lv-name">Architect</td><td>複雑なシステムを一貫した設計判断のもとで構築・指揮できる</td></tr>
+    <tr><td class="lv-range">55〜69</td><td class="lv-id">L3</td><td class="lv-name">Systems Practitioner</td><td>標準的なエージェント／検索システムを自力で構築でき、一部領域で設計判断を示せる</td></tr>
+    <tr><td class="lv-range">40〜54</td><td class="lv-id">L2</td><td class="lv-name">Application Builder</td><td>既存の枠組みに沿ったAIアプリケーションを構築できる</td></tr>
+    <tr><td class="lv-range">25〜39</td><td class="lv-id">L1</td><td class="lv-name">Foundation</td><td>AI活用の基礎を実務に適用している。システム構築はこれから</td></tr>
+    <tr><td class="lv-range">0〜24</td><td class="lv-id">L0</td><td class="lv-name">Entry</td><td>評価可能な実績が未蓄積（能力の否定ではなく、証拠の不在を意味する）</td></tr>
+  </table>
+  <p style="font-family:var(--mono);font-size:12px;color:var(--ink-faint)">※呼称はすべて成長段階を表す中立的な表現。「Top X%」等の相対表記は、社内で十分な採点データが揃うまで使用しない</p>
+</section>
+
+<section id="s5">
+  <h2><span class="sec-n">5</span>鮮度ルール — 古い実績は効力が落ちる</h2>
+  <p>生成AI分野は主要なパラダイムが半年〜1年で入れ替わるため、<b>実績の作成時期</b>によって証拠の効力を段階的に下げます。</p>
+  <div class="fresh-steps">
+    <div class="fresh-step">
+      <span class="f-period">直近12ヶ月</span>
+      <div class="f-rule">等級どおり満額で評価</div>
+      <div class="f-desc">A証拠はそのままA（上限5点）として扱われる</div>
+    </div>
+    <div class="fresh-step f2">
+      <span class="f-period">12〜24ヶ月</span>
+      <div class="f-rule">等級を1段階下げる</div>
+      <div class="f-desc">A→B（上限3点）、B→C（上限2点）に減衰する</div>
+    </div>
+    <div class="fresh-step f3">
+      <span class="f-period">24ヶ月超</span>
+      <div class="f-rule">参考扱い（上限2点）</div>
+      <div class="f-desc">等級にかかわらず、そのベクトルは最大2点まで</div>
+    </div>
+  </div>
+  <h3>例外</h3>
+  <ul>
+    <li><b>陳腐化の遅い領域</b>（コンテナによる環境分離、ネットワーク・権限設計、評価指標の設計思想など）は、評価者の判断で12〜24ヶ月の実績を満額扱いにできます。適用時は理由が採点シートに記録されます。</li>
+    <li>逆に、<b>特定モデル・ツールのバージョンに強く依存する実績</b>（特定モデル向けのプロンプト最適化など）は12ヶ月以内でも等級を下げることがあります。</li>
+  </ul>
+  <div class="note">
+    <span class="note-label">実務上の意味</span>
+    「昔すごいものを作った」だけではスコアを維持できません。四半期〜半年ごとに再診断し、直近の成果物で証拠を更新し続けることが前提の設計です。
+  </div>
+</section>
+
+<section id="s6">
+  <h2><span class="sec-n">6</span>診断の受け方・使い方</h2>
+  <h3>① 個人採点（Claude Codeスキル）</h3>
+  <p>このフォルダ（<code>genai-skill-assessment-app/</code>）を作業ディレクトリとしてClaude Codeの<b>対話モード</b>を起動し、「AIスキル診断を実行して」と入力すると診断が始まります。</p>
+  <div class="flow">
+    <div class="flow-step"><span class="fs-n">1</span><div class="fs-body"><b>準備</b><span class="fs-sub">— §2の「提出前チェックリスト」を確認。ガイドHTMLだけでなく、リポジトリ／デモ／Eval数値など一次ソースを揃える</span></div></div>
+    <div class="flow-step"><span class="fs-n">2</span><div class="fs-body"><b>基本情報の入力</b><span class="fs-sub">— 対象者名（英数字とハイフン）・評価日・評価者区分（自己評価／ピア／外部）</span></div></div>
+    <div class="flow-step"><span class="fs-n">3</span><div class="fs-body"><b>実績の提出</b><span class="fs-sub">— フォルダパス・URL・ファイルで実績を渡す。AIが読み取り</span></div></div>
+    <div class="flow-step"><span class="fs-n">4</span><div class="fs-body"><b>証拠引き出しヒアリング（原則）</b><span class="fs-sub">— 見えている穴からプローブを1つずつ。会話だけでは加点しない。不要なら「ヒアリングなしで採点」でスキップ可</span></div></div>
+    <div class="flow-step"><span class="fs-n">5</span><div class="fs-body"><b>採点と結果の出力</b><span class="fs-sub">— ベクトル割当・採点のあと <code>outputs/</code> に個人結果HTML、<code>data/results/</code> に確定JSON。サマリーを確認し、異議があれば再評価申請</span></div></div>
+  </div>
+  <h3>結果の読み方（次の一手と次の壁）</h3>
+  <p>結果HTMLの「次の一手」は、<b>重み付き点が最も低いベクトル</b>に絞った行動設計です。到達度4のベクトルがある場合、その後に<b>「次の壁の見分け（よくある取り違え）」</b>が付きます。これは「4点でできたつもり」になりやすい誤解と、行動基準5の見分けだけを示す任意節で、優先順位は最弱ベクトルのままです（上位○％などの相対表記は出しません）。</p>
+  <h3>証拠引き出しヒアリング（原則実施・分岐型）</h3>
+  <p><b>原則は採点前に実施</b>します。「ヒアリングして」と依頼する必要はありません。決め打ちの質問リストではなく、<b>見えている穴（シグナル）からプローブを1つずつ選ぶ</b>聞き取りです。会話だけでは加点せず、提出チェックリストと空表の下書きがゴールです。証拠が揃っている場合は確認1ターンで終え、急ぐ場合は「ヒアリングなしで採点」でスキップできます。詳細はスキル定義 <code>.claude/skills/genai-skill-assessment/SKILL.md</code> の「証拠引き出しヒアリング」を参照。</p>
+  <h3>② グループダッシュボード（集計スクリプト）</h3>
+  <p>メンバー各自のJSONを <code>data/results/</code> に集め、次のコマンドを実行します（Python 3.11+・追加インストール不要・AI呼び出しなし）。</p>
+  <pre><code># 既定: data/results/ を集計して outputs/dashboard.html を出力
+python3 scripts/generate_dashboard.py
+
+# フォルダ・出力先を指定する場合
+python3 scripts/generate_dashboard.py &lt;結果フォルダ&gt; &lt;出力HTMLパス&gt;</code></pre>
+  <p style="font-size:13px">社内相対位置・比較レーダーチャート・ヒートマップ・レベル分布が1つのHTMLに出力されます。同一対象者の複数JSONは<b>評価日が最新の1件のみ</b>採用されます。</p>
+  <h3>配布方法</h3>
+  <ul>
+    <li><b>全機能（推奨）</b>: <code>genai-skill-assessment-app/</code> フォルダごとコピーする（前提: Python 3.11+ と Claude Code本体のみ）</li>
+    <li>スキルのみ: <code>.claude/skills/genai-skill-assessment/</code> を利用先プロジェクトの <code>.claude/skills/</code> にコピー</li>
+    <li>集計スクリプトのみ: <code>scripts/generate_dashboard.py</code> 単体をコピー（標準ライブラリのみで動作）</li>
+  </ul>
+  <div class="note warn">
+    <span class="note-label">セキュリティ制約（最重要）</span>
+    個人採点は必ず人間が立ち会う<b>対話セッション</b>で実行してください。<code>claude -p</code> 等の無人・自動のヘッドレス呼び出しは社内セキュリティポリシーにより<b>使用禁止</b>です。集計スクリプトはAI呼び出しを一切含まず、オフラインで動作します。
+  </div>
+</section>
+
+<section id="s7">
+  <h2><span class="sec-n">7</span>よくある誤解と運用原則</h2>
+  <div class="qa">
+    <div class="q">スコアが低い＝エンジニアとして能力が低い、ということ？</div>
+    <div class="a">違います。測っているのはArchitect Trackの、しかも「証拠が残っている」能力だけです。L0は「評価可能な実績が未蓄積」という意味であり、能力の否定ではありません。成果物を残す習慣がない人は実力より低く出ます（既知の限界）。</div>
+  </div>
+  <div class="qa">
+    <div class="q">「社内Top X%」のような順位はわからないの？</div>
+    <div class="a">現時点では出せません。相対表記は、社内で10名以上の採点データが揃い、評価者間の一致が確認できるまで凍結されています。いま読み取れるのは絶対スコアとレベル帯のみです。「次の壁の見分け」も順位ではなく、よくある取り違え（概念の壁）を示します。</div>
+  </div>
+  <div class="qa">
+    <div class="q">到達度4なのに「まだ足りない」と書かれるのは減点？</div>
+    <div class="a">減点ではありません。4はすでに高い到達です。「次の壁の見分け」は、5に見える成果（例: スキーマ運用・役割分担）と、本当の5（例: 状態受け渡し規約・本番の継続運用記録）を取り違えないための気づきです。今週の行動は、結果HTMLの主たる「次の一手」を優先してください。</div>
+  </div>
+  <div class="qa">
+    <div class="q">この結果は人事評価（昇給・査定）に使われる？</div>
+    <div class="a">使われません。結果は育成・配置の参考情報であり、処遇査定には直接連動させないことが運用原則です。また、結果は本人に全項目開示され、追加証拠の提出により再評価を申請できます。</div>
+  </div>
+  <div class="qa">
+    <div class="q">「第三者」とはインターネット上の見知らぬ人のこと？</div>
+    <div class="a"><b>違います。</b> 本人の申告だけでなく、<b>採点AI・ピア評価者・社内レビュアー</b>が手順どおり検証できるか、という意味です。本ツールは社内用なので、<b>社内Git・社内wiki・VPN内デモ・ローカルファイル</b>も手順付きなら再現性Aになり得ます（FW 7章「社内非公開の成果物を等級Aとして認める運用」）。外部公開は必須ではありません。</div>
+  </div>
+  <div class="qa">
+    <div class="q">HTMLガイドの中にURLと手順を書けばAになる？</div>
+    <div class="a"><b>なり得ます。</b> ガイド内に「デモURL＋確認手順」「リポジトリ＋再現手順」「Eval CSVの場所＋再計測方法」がセットで書いてあり、採点セッションでAIが内容を確認できるならAです。逆に、設計説明だけで検証先・手順・数値が無いガイドはB（上限3点）のままです。</div>
+  </div>
+  <div class="qa">
+    <div class="q">URLを載せれば再現性A（再現可能）になる？</div>
+    <div class="a"><b>URLの種類と手順が重要です。</b> SNS投稿・ブログ記事は原則Bです。Aになるのは、リポジトリ・デモ・Eval数値ファイルなど<b>検証可能な一次ソース</b>に、<b>再現・確認手順</b>がセットになっている場合です（社内限定でも可）。</div>
+  </div>
+  <div class="qa">
+    <div class="q">HTML技術資料（spec-tech-guide）だけ渡すと点数が下がる？</div>
+    <div class="a"><b>中身次第です。</b> 設計説明だけなら再現性B（上限3点）。ガイド内に検証用URL・手順・Eval数値が書いてあればAになり得ます。ガイドに何も書かずファイルだけ渡す場合も、検証情報が無ければBです。</div>
+  </div>
+  <div class="qa">
+    <div class="q">スコアを上げる最短の方法は？</div>
+    <div class="a">最も低いベクトルについて「<b>再現性A</b>（評価者が手順どおり検証できる成果物）」を1つ作ることです。リポジトリ＋手順、デモURL＋手順、数値記録つきEvalでも可。再現性Aは上限5点まで開き、到達度が足りれば4点以上も可能です。</div>
+  </div>
+  <div class="qa">
+    <div class="q">自己評価だけで完結していい？</div>
+    <div class="a">自己評価から始めて構いませんが、会話・自己申告のみを根拠にした採点は禁止されています（成果物の棚卸しが先）。組織で使う場合は、評価者2名の独立採点で基準を校正してから展開する設計です。</div>
+  </div>
+</section>
+
+<footer class="doc-foot">
+  <span>GENAI SKILL ASSESSMENT — USER GUIDE v1.0</span>
+  <span>正本: <a href="outputs/genai-skill-framework-v2.html">生成AI技術者スキル評価フレームワーク v2.0</a>（2026-07-18 制定）</span>
+</footer>
+
+</div>
+</main>
+</div>
+</body>
+</html>

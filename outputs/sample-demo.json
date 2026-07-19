@@ -1,0 +1,77 @@
+{
+  "framework_version": "2.0",
+  "subject": "sample-demo",
+  "assessment_date": "2026-07-18",
+  "evaluator_type": "self",
+  "total_score": 52.0,
+  "level": "L2",
+  "level_name": "Application Builder",
+  "vectors": {
+    "V1": {
+      "name": "Context Engineering",
+      "raw_score": 4,
+      "weight": 25,
+      "weighted_score": 20.0,
+      "evidence_grade": "A",
+      "freshness": "within_12m",
+      "freshness_exception": { "applied": false, "reason": "" },
+      "mandatory_checks": null,
+      "deep_dive_done": true,
+      "rationale": "ドメイン固有のコンテキストスキーマ（仕様記述形式）を定義しGitHubで再現可能な形で運用している（行動基準4に該当）。深掘り確認で設計判断の説明と成果物の整合を確認済み",
+      "evidence": ["https://github.com/example/context-schema-repo"]
+    },
+    "V2": {
+      "name": "Agentic System Design",
+      "raw_score": 3,
+      "weight": 25,
+      "weighted_score": 15.0,
+      "evidence_grade": "B",
+      "freshness": "within_12m",
+      "freshness_exception": { "applied": false, "reason": "" },
+      "mandatory_checks": { "security": true, "output_quality": true },
+      "deep_dive_done": false,
+      "rationale": "複数エージェントの役割分担と暴走防止の設計文書があり行動基準4相当だが、動くシステム・計測結果がなく証拠等級B（設計判断の文書）のため上限3点を適用。セキュリティ・出力品質の必須観点は文書内に記述あり",
+      "evidence": ["docs/design/agent-arch.md"]
+    },
+    "V3": {
+      "name": "Knowledge Architecture",
+      "raw_score": 2,
+      "weight": 20,
+      "weighted_score": 8.0,
+      "evidence_grade": "C",
+      "freshness": "12_to_24m",
+      "freshness_exception": { "applied": false, "reason": "" },
+      "mandatory_checks": { "method_selection_rationale": true },
+      "deep_dive_done": false,
+      "rationale": "検索方式の比較検討記事（等級B）だが作成が18ヶ月前のため鮮度ルールでB→Cに減衰、上限2点を適用",
+      "evidence": ["https://blog.example.com/rag-vs-longcontext"]
+    },
+    "V4": {
+      "name": "Evaluation & Observability",
+      "raw_score": 1,
+      "weight": 15,
+      "weighted_score": 3.0,
+      "evidence_grade": "C",
+      "freshness": "within_12m",
+      "freshness_exception": { "applied": false, "reason": "" },
+      "mandatory_checks": null,
+      "deep_dive_done": false,
+      "rationale": "良否判定の基準を決めて手動評価している記録（行動基準1）。判断理由・再現性のないメモのため等級C",
+      "evidence": ["社内wiki: eval-criteria（手動評価基準メモ）"]
+    },
+    "V5": {
+      "name": "Production & LLMOps",
+      "raw_score": 2,
+      "weight": 15,
+      "weighted_score": 6.0,
+      "evidence_grade": "B",
+      "freshness": "12_to_24m",
+      "freshness_exception": { "applied": false, "reason": "コンテナ環境分離は陳腐化の遅い領域だが、文書が特定ツールのバージョンに依存した手順を含むため例外を適用しないとユーザーが判断" },
+      "mandatory_checks": { "cost_risk_rationale": false },
+      "deep_dive_done": false,
+      "rationale": "コンテナ技術で依存関係を分離した開発環境の構築文書（行動基準2）。18ヶ月前の成果物のため鮮度ルールでA→Bに減衰（上限3点、行動基準2のため影響なし）",
+      "evidence": ["https://github.com/example/dev-container-setup"]
+    }
+  },
+  "notes": "スキル対話試験用のダミーデータ（実在の人物・実績ではない）"
+}
